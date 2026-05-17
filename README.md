@@ -82,7 +82,15 @@ This system automatically:
 - Search by title or organization
 
 ### Preview
-[!Automated RFP Generation Pipeline](frontend/assets/SS1.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS1.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS2.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS3.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS4.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS5.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS6.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS7.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS8.png)
+![Automated RFP Generation Pipeline](frontend/src/assets/SS9.png)
 ---
 
 ## Tech Stack
