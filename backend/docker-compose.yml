@@ -1,0 +1,43 @@
+version: "3.9" # Docker Compose file format version
+
+services:
+
+  db:
+    image: postgres:18                        # Postgres version 18
+    container_name: rfp_automation_pipeline_postgres
+    restart: always                           # Auto-restart if container crashes
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}   # Pulled from .env, never hardcoded
+      POSTGRES_DB: rfp_database
+    ports:
+      - "5433:5432"                             # 5433 avoids conflict with local Postgres on 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql       # Persist data across container restarts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rfp_database"]  # Verify specific DB
+      interval: 10s       # Check every 10 seconds
+      timeout: 5s         # Fail if no response within 5 seconds
+      retries: 10         # Allow more retries since DB can be slow to boot
+      start_period: 15s   # Wait 15 seconds before first check
+
+  backend:
+    build: .
+    container_name: rfp_automation_pipeline_backend
+    restart: always                           # Auto-restart if container crashes
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env                                  # Cleaner than listing each variable individually
+    depends_on:
+      db:
+        condition: service_healthy            # Only start after DB passes healthcheck
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s                       # Give FastAPI time to boot before checking
+
+volumes:
+  postgres_data:
